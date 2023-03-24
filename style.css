@@ -1,0 +1,14 @@
+.img {
+  width: 500px;
+  height: 500px;
+}
+
+.big_img-wrapper {
+  width: 700px;
+  height: 700px;
+}
+
+.section {
+  display: flex;
+  gap: 50px;
+}
