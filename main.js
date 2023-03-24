@@ -1,105 +1,100 @@
 jQuery(document).ready(function ($) {
-  // let basic;
-  // $('.add-photo').on('click', function () {
-  //   $('#photo').trigger('click');
-  //   return false;
-  // });
-  // start
-  // let widthInput = $('#width');
-  // let heightInput = $('#height');
-  // let widthInputVal;
-  // let heightInputVal;
+  // START
 
-  // widthInput.on('change', function () {
-  //   widthInputVal = parseInt(this.value);
-  // });
-  // heightInput.on('change', function () {
-  //   heightInputVal = parseInt(this.value);
-  // });
-
-  // $('.big_img').croppie({
-  //   viewport: {
-  //     width: widthInputVal,
-  //     height: heightInputVal,
-  //   },
-  //   showZoomer: false,
-  //   enableResize: true,
-  //   enableOrientation: true,
-  //   mouseWheelZoom: 'ctrl',
-  // });
-
-  // start
-
-  // Получаем элементы HTML
-  const bigImg = document.querySelector('.big_img');
-  const heightInput = document.querySelector('#height');
-  const widthInput = document.querySelector('#width');
-
-  // Инициализируем объект Croppie
-  const croppie = new Croppie(bigImg, {
-    viewport: { width: 100, height: 200 },
-    boundary: { width: 300, height: 300 },
-    showZoomer: true,
+  var crop = tinycrop.create({
+    parent: '#mount',
+    image: './img/Productfoto1-2-510x340.png',
+    bounds: {
+      width: '100%',
+      height: '50%',
+    },
+    backgroundColors: ['#353535'],
+    selection: {
+      color: '#353535',
+      activeColor: '#353535',
+      minWidth: 50,
+      minHeight: 50,
+      width: 100,
+      height: 200,
+    },
   });
 
-  // Обновляем viewport изображения при изменении значений полей ввода
-  heightInput.addEventListener('input', updateViewport);
-  widthInput.addEventListener('input', updateViewport);
-
-  function updateViewport() {
-    const height = parseInt(heightInput.value);
-    const width = parseInt(widthInput.value);
-    croppie.setViewport({ width, height });
+  function getId(id) {
+    return document.getElementById(id);
   }
 
-  // end
+  var inputX = getId('input-x');
+  var inputY = getId('input-y');
+  var inputWidth = getId('input-width');
+  var inputHeight = getId('input-height');
 
-  // widthInput.addEventListener('change', function () {
-  //   croppie.bind({
-  //     viewport: {
-  //       width: parseInt(this.value),
-  //     },
-  //   });
-  // });
-  // heightInput.addEventListener('change', function () {
-  //   croppie.bind({
-  //     viewport: {
-  //       height: parseInt(this.value),
-  //     },
-  //   });
-  // });
-  // end
-  // $('#photo').on('change', function () {
-  //   let formData = new FormData();
-  //   formData.append('file', $(this)[0].files[0]);
-  //   $.ajaxSetup({
-  //     headers: {
-  //       //headers
-  //     },
-  //   });
-  //   $.ajax({
-  //     url: 'server.php',
-  //     type: 'POST',
-  //     data: formData,
-  //     processData: false,
-  //     contentType: false,
-  //     dataType: 'json',
-  //   }).done(function (html) {
-  //     if (html.status == 'success') {
-  //       //
-  //       $('input[name="photo_c"]').val(html.file_max);
-  //       $('.photo_i').attr('src', html.path_max);
-  //       // Crop
-  //       // basic = $('.photo_i').croppie({
-  //       //   viewport: { width: 100, height: 200 },
-  //       //   showZoomer: false,
-  //       //   enableResize: true,
-  //       //   enableOrientation: true,
-  //       //   mouseWheelZoom: 'ctrl',
-  //       // });
-  //     }
-  //   });
-  // });
+  function setInputsFromRegion(region) {
+    inputX.value = region.x;
+    inputY.value = region.y;
+    inputWidth.value = region.width;
+    inputHeight.value = region.height;
+  }
 
+  $(inputWidth).on('blur', function () {
+    crop.selectionLayer.selection.region.width = parseInt(inputWidth.value);
+    crop.revalidateAndPaint();
+  });
+  $(inputHeight).on('blur', function () {
+    crop.selectionLayer.selection.region.height = parseInt(inputHeight.value);
+    crop.revalidateAndPaint();
+  });
   //
+  crop
+    .on('start', function (region) {
+      setInputsFromRegion(region);
+    })
+    .on('move', function (region) {
+      setInputsFromRegion(region);
+    })
+    .on('resize', function (region) {
+      setInputsFromRegion(region);
+    })
+    .on('change', function (region) {
+      setInputsFromRegion(region);
+    })
+    .on('end', function (region) {
+      setInputsFromRegion(region);
+    });
+
+  function sendDataCropImage() {
+    let srcImage = crop.image.src;
+    let cropX = crop.selectionLayer.selection.region.x;
+    let cropY = crop.selectionLayer.selection.region.y;
+    let cropWidth = crop.selectionLayer.selection.region.width;
+    let cropHeight = crop.selectionLayer.selection.region.height;
+    //
+    // console.log('cropX: ' + cropX, 'cropY ' + cropY, 'cropWidth ' + cropWidth, 'cropHeight ' + cropHeight, 'srcImage ' + srcImage);
+    //
+    $.ajax({
+      url: 'server.php',
+      method: 'POST',
+      data: {
+        x: cropX,
+        y: cropY,
+        width: cropWidth,
+        height: cropHeight,
+        src: srcImage,
+      },
+      success: function (response) {
+        console.log(response);
+      },
+      error: function (error) {
+        console.error(error.responseText);
+      },
+    });
+  }
+
+  // sendDataCropImage();
+
+  var saveButton = getId('save-button');
+  saveButton.addEventListener('click', function () {
+    sendDataCropImage();
+  });
+
+  // END
 });
