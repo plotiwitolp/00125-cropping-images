@@ -1,3 +1,8 @@
+/**
+ * Theme Name:  Crop Img
+ * Version:     1.0
+ */
+
 body {
   margin: 0;
   padding: 0;
@@ -29,7 +34,7 @@ h1 {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -87,7 +92,7 @@ h1 {
 
   .mount {
     display: inline-block;
-    width: 100%;
+    width: 80%;
   }
 
   .info {

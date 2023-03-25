@@ -1,12 +1,14 @@
 jQuery(document).ready(function ($) {
   // START
 
+  let classImg = $('.img_class').attr('src');
+
   var crop = tinycrop.create({
     parent: '#mount',
-    image: './img/Productfoto1-2-510x340.png',
+    image: classImg,
     bounds: {
       width: '100%',
-      height: '50%',
+      height: '100%',
     },
     backgroundColors: ['#353535'],
     selection: {
@@ -35,14 +37,32 @@ jQuery(document).ready(function ($) {
     inputHeight.value = region.height;
   }
 
-  $(inputWidth).on('blur', function () {
+  function minMaxValues(min, max) {
+    if (parseInt(inputWidth.value) < min) {
+      inputWidth.value = min;
+    }
+    if (parseInt(inputHeight.value) < min) {
+      inputHeight.value = min;
+    }
+    if (parseInt(inputWidth.value) > max) {
+      inputWidth.value = max;
+    }
+    if (parseInt(inputHeight.value) > max) {
+      inputHeight.value = max;
+    }
+  }
+
+  $(inputWidth).on('change', function () {
+    minMaxValues(50, 400);
     crop.selectionLayer.selection.region.width = parseInt(inputWidth.value);
     crop.revalidateAndPaint();
   });
-  $(inputHeight).on('blur', function () {
+  $(inputHeight).on('change', function () {
+    minMaxValues(50, 400);
     crop.selectionLayer.selection.region.height = parseInt(inputHeight.value);
     crop.revalidateAndPaint();
   });
+
   //
   crop
     .on('start', function (region) {
@@ -67,11 +87,9 @@ jQuery(document).ready(function ($) {
     let cropY = crop.selectionLayer.selection.region.y;
     let cropWidth = crop.selectionLayer.selection.region.width;
     let cropHeight = crop.selectionLayer.selection.region.height;
-    //
-    // console.log('cropX: ' + cropX, 'cropY ' + cropY, 'cropWidth ' + cropWidth, 'cropHeight ' + cropHeight, 'srcImage ' + srcImage);
-    //
+
     $.ajax({
-      url: 'server.php',
+      url: 'http://00125-cropping-images/00125-cropping-images-v3/wp-content/themes/cropimg/server.php',
       method: 'POST',
       data: {
         x: cropX,
@@ -82,14 +100,16 @@ jQuery(document).ready(function ($) {
       },
       success: function (response) {
         console.log(response);
+        $('.crop-img').html(`<img src="http://00125-cropping-images/00125-cropping-images-v3/wp-content/themes/cropimg/${response.crop_scr}">`);
+        $('.crop-data').html(`
+        <p>${response.crop_scr}</p>
+        `);
       },
       error: function (error) {
         console.error(error.responseText);
       },
     });
   }
-
-  // sendDataCropImage();
 
   var saveButton = getId('save-button');
   saveButton.addEventListener('click', function () {
