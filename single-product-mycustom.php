@@ -61,10 +61,26 @@ $image_id = $product->get_image_id(); // получаем ID основного 
         }
         ?>
 
-        <h3> Это то, что сохраняется на сервере:</h3>
-        <div class="crop-img"></div>
+        <input type="hidden" name="custom_data" value="" id="custom-data-input">
+
+
+
+        <h3 style="display:none;"> Это то, что сохраняется на сервере:</h3>
+        <div class="crop-img" style="display:none;"></div>
         <h3> Ссылка с уникальным именем обрезанной картинки (то, что и должно передаваться вместе с остальными данными о товаре при его отправки):</h3>
-        <div class="crop-data"></div>
+        <div class="crop-data">пусто</div>
+
+        <script>
+            // Добавляем значение в кастомные данные
+            // '.single_add_to_cart_button'
+            jQuery('body').on('click', '#save-button', function() {
+                setTimeout(function() {
+                    var custom_data = jQuery('.crop-data').html();
+                    jQuery('#custom-data-input').val(custom_data);
+                    console.log(custom_data);
+                }, 1000)
+            });
+        </script>
     </div>
 </div>
 

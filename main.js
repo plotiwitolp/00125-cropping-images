@@ -99,7 +99,7 @@ jQuery(document).ready(function ($) {
         src: srcImage,
       },
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         $('.crop-img').html(`<img src="http://00125-cropping-images/00125-cropping-images-v3/wp-content/themes/cropimg/${response.crop_scr}">`);
         $('.crop-data').html(`
         <p>${response.crop_scr}</p>

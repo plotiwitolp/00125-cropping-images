@@ -38,7 +38,7 @@ if (isset($_POST['src'])) {
     $crop_name = "crop_img_" . str_random(6) . "." . $ext;
 
     $arr['crop_name'] = $crop_name;
-    $arr['crop_scr'] = "upload/" . $crop_name;
+    $arr['crop_scr'] =  "http://00125-cropping-images/00125-cropping-images-v3/wp-content/themes/cropimg/upload/" . $crop_name;
 
     if (!file_exists('upload')) {
         mkdir('upload');
