@@ -62,7 +62,7 @@ $image_id = $product->get_image_id(); // получаем ID основного 
         ?>
 
         <input type="hidden" name="custom_data" value="" id="custom-data-input">
-
+        <div id="price_calculator"></div>
 
 
         <h3 style="display:none;"> Это то, что сохраняется на сервере:</h3>
@@ -71,15 +71,7 @@ $image_id = $product->get_image_id(); // получаем ID основного 
         <div class="crop-data">пусто</div>
 
         <script>
-            // Добавляем значение в кастомные данные
-            // '.single_add_to_cart_button'
-            jQuery('body').on('click', '#save-button', function() {
-                setTimeout(function() {
-                    var custom_data = jQuery('.crop-data').html();
-                    jQuery('#custom-data-input').val(custom_data);
-                    console.log(custom_data);
-                }, 1000)
-            });
+
         </script>
     </div>
 </div>
