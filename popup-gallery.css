@@ -1,0 +1,32 @@
+.popup-gallery_wrap {
+  display: none;
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  left: 50px;
+  top: 50px;
+  border: 1px solid tomato;
+}
+
+.popup-gallery_wrap_active {
+  display: block;
+}
+
+.flip-card-inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.flip-card-front {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 90px;
+  margin-right: 20px;
+  margin-left: 70px;
+}

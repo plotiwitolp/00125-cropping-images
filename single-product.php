@@ -14,17 +14,21 @@ $product = get_post($product_id);
 echo '<pre>';
 // var_dump($product);
 echo '</pre>';
+?>
 
 
 
+<?php
 while (have_posts()) :
     the_post();
-    do_action('woocommerce_before_single_product');
+    // do_action('woocommerce_before_single_product');
 ?>
     <div id="product-<?php the_ID(); ?>" <?php wc_product_class(); ?>>
+
         <?php
         do_action('woocommerce_before_single_product_summary');
         ?>
+        test-2
         <?php
 
         $product_permalink = get_permalink($product_id) . 'custom-product-template/?id=' . $product_id;
@@ -49,3 +53,4 @@ endwhile; // end of the loop.
 do_action('woocommerce_after_main_content');
 
 get_footer();
+?>
