@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  //   $('.div-wrapper').slick();
-
   $('body').on('click', '.flip-card-front img', function () {
     let productIdName = $(this).parents('.flip-card-inner').attr('id');
 
